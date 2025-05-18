@@ -20,6 +20,7 @@ namespace ROS2
 /// <summary>
 /// An example class provided for testing of basic ROS2 communication
 /// </summary>
+[RequireComponent(typeof(ROS2UnityComponent))]
 public class Ros2PositionPublisher : MonoBehaviour
 {
     // Start is called before the first frame update
