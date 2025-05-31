@@ -1,0 +1,288 @@
+<?xml version="1.0" ?>
+<robot name="robot2" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<xacro:include filename="$(find robot2_description)/urdf/materials.xacro" />
+<xacro:include filename="$(find robot2_description)/urdf/robot2.trans" />
+<link name="base_link">
+  <inertial>
+    <origin xyz="0.0021492224979336194 0.05035481983310268 0.011642602005985042" rpy="0 0 0"/>
+    <mass value="0.5608785964014465"/>
+    <inertia ixx="0.00675" iyy="0.00419" izz="0.010643" ixy="-0.000208" iyz="0.000225" ixz="-1.2e-05"/>
+  </inertial>
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://robot2_description/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name=""/>
+  </visual>
+  <collision>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://robot2_description/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="base-disintegurate3_v1_1">
+  <inertial>
+    <origin xyz="0.005266660630025134 0.0025401253351865476 0.006066235848114929" rpy="0 0 0"/>
+    <mass value="0.22737830192408823"/>
+    <inertia ixx="0.001139" iyy="0.001107" izz="0.002122" ixy="-2.4e-05" iyz="-0.0" ixz="-1e-05"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.0 -0.0 -0.05" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://robot2_description/meshes/base-disintegurate3_v1_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name=""/>
+  </visual>
+  <collision>
+    <origin xyz="0.0 -0.0 -0.05" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://robot2_description/meshes/base-disintegurate3_v1_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="base-disintegurate4_v1_1">
+  <inertial>
+    <origin xyz="0.04582353194421808 0.003093089706767067 0.01930902909294417" rpy="0 0 0"/>
+    <mass value="0.2102831990454996"/>
+    <inertia ixx="0.001297" iyy="0.000757" izz="0.001974" ixy="0.000713" iyz="-3e-05" ixz="-6.9e-05"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.047705 0.000482 -0.062" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://robot2_description/meshes/base-disintegurate4_v1_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name=""/>
+  </visual>
+  <collision>
+    <origin xyz="0.047705 0.000482 -0.062" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://robot2_description/meshes/base-disintegurate4_v1_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="base-disintegurate5_v1_1">
+  <inertial>
+    <origin xyz="0.03515220637047642 0.03344392909904248 0.04151926678581974" rpy="0 0 0"/>
+    <mass value="0.17650962184421506"/>
+    <inertia ixx="0.001998" iyy="0.002234" izz="0.002989" ixy="-0.001423" iyz="-0.000887" ixz="-0.000967"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.067986 -0.086895 -0.092501" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://robot2_description/meshes/base-disintegurate5_v1_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name=""/>
+  </visual>
+  <collision>
+    <origin xyz="0.067986 -0.086895 -0.092501" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://robot2_description/meshes/base-disintegurate5_v1_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="base-disintegurate6_v1_1">
+  <inertial>
+    <origin xyz="0.04460466843110386 0.0191276233320319 0.04150116119084127" rpy="0 0 0"/>
+    <mass value="0.17650962334160306"/>
+    <inertia ixx="0.001187" iyy="0.003045" izz="0.002989" ixy="-0.001084" iyz="-0.00055" ixz="-0.001191"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.053769 0.096342 -0.092501" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://robot2_description/meshes/base-disintegurate6_v1_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name=""/>
+  </visual>
+  <collision>
+    <origin xyz="-0.053769 0.096342 -0.092501" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://robot2_description/meshes/base-disintegurate6_v1_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="base-disintegurate7_v1_1">
+  <inertial>
+    <origin xyz="0.1671601669415777 0.208933062117106 0.09978407899189912" rpy="0 0 0"/>
+    <mass value="0.04387247122504098"/>
+    <inertia ixx="0.001059" iyy="0.000635" izz="0.001369" ixy="-0.00065" iyz="-0.000377" ixz="-0.000273"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.464894 -0.105487 -0.302909" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://robot2_description/meshes/base-disintegurate7_v1_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name=""/>
+  </visual>
+  <collision>
+    <origin xyz="-0.464894 -0.105487 -0.302909" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://robot2_description/meshes/base-disintegurate7_v1_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="base-disintegurate7_v1__1__1">
+  <inertial>
+    <origin xyz="0.257549683667159 0.07327149184067328 0.09922024329514112" rpy="0 0 0"/>
+    <mass value="0.04387247122504098"/>
+    <inertia ixx="0.000234" iyy="0.001459" izz="0.001369" ixy="-0.000304" iyz="-0.000106" ixz="-0.000453"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.277362 -0.387716 -0.302909" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://robot2_description/meshes/base-disintegurate7_v1__1__1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name=""/>
+  </visual>
+  <collision>
+    <origin xyz="-0.277362 -0.387716 -0.302909" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://robot2_description/meshes/base-disintegurate7_v1__1__1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="base-disintegurate8_v1_1">
+  <inertial>
+    <origin xyz="0.00688614293608103 0.01794723838108353 -0.043045643189845606" rpy="0 0 0"/>
+    <mass value="0.051380977028046323"/>
+    <inertia ixx="2.2e-05" iyy="2.2e-05" izz="1.2e-05" ixy="0.0" iyz="3e-06" ixz="4e-06"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.756507 -0.489165 -0.488922" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://robot2_description/meshes/base-disintegurate8_v1_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name=""/>
+  </visual>
+  <collision>
+    <origin xyz="-0.756507 -0.489165 -0.488922" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://robot2_description/meshes/base-disintegurate8_v1_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="hand-disi1_v1_1">
+  <inertial>
+    <origin xyz="-0.011134487065667664 0.015413598961266206 -0.038856830759737226" rpy="0 0 0"/>
+    <mass value="0.052712208364185616"/>
+    <inertia ixx="1.9e-05" iyy="1.9e-05" izz="1.6e-05" ixy="-0.0" iyz="-0.0" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.779858 -0.495376 -0.426043" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://robot2_description/meshes/hand-disi1_v1_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name=""/>
+  </visual>
+  <collision>
+    <origin xyz="-0.779858 -0.495376 -0.426043" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://robot2_description/meshes/hand-disi1_v1_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="hand--dis1_v1_1">
+  <inertial>
+    <origin xyz="0.013977005536962461 0.006299413187571212 -0.041516132079400025" rpy="0 0 0"/>
+    <mass value="0.2294129503431717"/>
+    <inertia ixx="0.000256" iyy="0.000268" izz="0.0003" ixy="-1.8e-05" iyz="-9e-06" ixz="-2.3e-05"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.785723 -0.522085 -0.372011" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://robot2_description/meshes/hand--dis1_v1_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name=""/>
+  </visual>
+  <collision>
+    <origin xyz="-0.785723 -0.522085 -0.372011" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://robot2_description/meshes/hand--dis1_v1_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<joint name="回転 1" type="revolute">
+  <origin xyz="0.0 0.0 0.05" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="base-disintegurate3_v1_1"/>
+  <axis xyz="0.0 0.0 -1.0"/>
+  <limit upper="6.283185" lower="0.0" effort="100" velocity="100"/>
+</joint>
+
+<joint name="回転 2" type="revolute">
+  <origin xyz="-0.047705 -0.000482 0.012" rpy="0 0 0"/>
+  <parent link="base-disintegurate3_v1_1"/>
+  <child link="base-disintegurate4_v1_1"/>
+  <axis xyz="-0.55343 0.832896 -0.0"/>
+  <limit upper="0.087266" lower="-0.349066" effort="100" velocity="100"/>
+</joint>
+
+<joint name="回転 3" type="revolute">
+  <origin xyz="-0.020281 0.087377 0.030501" rpy="0 0 0"/>
+  <parent link="base-disintegurate4_v1_1"/>
+  <child link="base-disintegurate5_v1_1"/>
+  <axis xyz="0.284867 0.189284 -0.939693"/>
+  <limit upper="0.0" lower="-1.047198" effort="100" velocity="100"/>
+</joint>
+
+<joint name="回転 4" type="revolute">
+  <origin xyz="0.101474 -0.09586 0.030501" rpy="0 0 0"/>
+  <parent link="base-disintegurate4_v1_1"/>
+  <child link="base-disintegurate6_v1_1"/>
+  <axis xyz="0.284867 0.189284 -0.939693"/>
+  <limit upper="1.047198" lower="0.0" effort="100" velocity="100"/>
+</joint>
+
+<joint name="回転 5" type="revolute">
+  <origin xyz="0.411125 0.201829 0.210408" rpy="0 0 0"/>
+  <parent link="base-disintegurate6_v1_1"/>
+  <child link="base-disintegurate7_v1_1"/>
+  <axis xyz="-0.284867 -0.189284 0.939693"/>
+  <limit upper="2.617994" lower="0.0" effort="100" velocity="100"/>
+</joint>
+
+<joint name="回転 11" type="revolute">
+  <origin xyz="0.345348 0.300821 0.210408" rpy="0 0 0"/>
+  <parent link="base-disintegurate5_v1_1"/>
+  <child link="base-disintegurate7_v1__1__1"/>
+  <axis xyz="-0.284867 -0.189284 0.939693"/>
+  <limit upper="1.570796" lower="-0.523599" effort="100" velocity="100"/>
+</joint>
+
+<joint name="回転 18" type="revolute">
+  <origin xyz="0.291613 0.383678 0.186013" rpy="0 0 0"/>
+  <parent link="base-disintegurate7_v1_1"/>
+  <child link="base-disintegurate8_v1_1"/>
+  <axis xyz="-0.284867 -0.189284 0.939693"/>
+  <limit upper="0.0" lower="-1.570796" effort="100" velocity="100"/>
+</joint>
+
+<joint name="回転 20" type="revolute">
+  <origin xyz="0.023351 0.006211 -0.062879" rpy="0 0 0"/>
+  <parent link="base-disintegurate8_v1_1"/>
+  <child link="hand-disi1_v1_1"/>
+  <axis xyz="-0.55343 0.832896 -0.0"/>
+  <limit upper="1.396263" lower="-1.745329" effort="100" velocity="100"/>
+</joint>
+
+<joint name="回転 21" type="revolute">
+  <origin xyz="0.005865 0.026709 -0.054032" rpy="0 0 0"/>
+  <parent link="hand-disi1_v1_1"/>
+  <child link="hand--dis1_v1_1"/>
+  <axis xyz="-0.284867 -0.189284 0.939693"/>
+  <limit upper="1.570796" lower="-1.570796" effort="100" velocity="100"/>
+</joint>
+
+</robot>
