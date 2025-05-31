@@ -13,34 +13,32 @@
 // limitations under the License.
 
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace ROS2
 {
-    public class Ros2PositionPublisher : MonoBehaviour
+    public class Ros2ArmMove : MonoBehaviour
     {
         // Start is called before the first frame update
         private ROS2UnityComponent ros2Unity;
         private ROS2Node ros2Node;
         private IPublisher<trajectory_msgs.msg.JointTrajectory> joint_pub_;
         private ISubscription<trajectory_msgs.msg.JointTrajectory> joint_sub_;
-        private Quaternion targetLeftRot;
-        private Quaternion targetRightRot;
-
+        private trajectory_msgs.msg.JointTrajectory latest_msg = null;
+        private bool has_new_msg = false;
+        [SerializeField]
         private string[] joint_names_;
+        public ArticulationBody[] articulationBodies;
 
         [SerializeField]
         private float speed = 1.0f; // Speed of the joint movement
-        [SerializeField]
-        private Transform left_joint_;
-        [SerializeField]
-        private Transform right_joint_;
+        private List<ArticulationDrive> aDrive;
 
         void Awake()
         {
             ros2Unity = GetComponent<ROS2UnityComponent>();
-            targetLeftRot = left_joint_.localRotation;
-            targetRightRot = right_joint_.localRotation;
-            joint_names_ = new string[] { "unity_joint_left", "unity_joint_right" };
+            aDrive = new List<ArticulationDrive>();
+
         }
 
         void Update()
@@ -57,11 +55,18 @@ namespace ROS2
                 }
                 trajectory_msgs.msg.JointTrajectory msg = CreatePubMsg();
                 joint_pub_.Publish(msg);
+                if (has_new_msg && latest_msg != null)
+                {
+                    for (int i = 0; i < latest_msg.Points[0].Positions.Length; i++)
+                    {
+                        var body = articulationBodies[i];
+                        var drive = body.xDrive;
+                        drive.target = Mathf.Rad2Deg * (float)latest_msg.Points[0].Positions[i];
+                        body.xDrive = drive;
+                    }
+                    has_new_msg = false;  // フラグをリセット
+                }
             }
-            left_joint_.localRotation =
-            Quaternion.Slerp(left_joint_.localRotation, targetLeftRot, Time.deltaTime * speed);
-            right_joint_.localRotation =
-            Quaternion.Slerp(right_joint_.localRotation, targetRightRot, Time.deltaTime * speed);
         }
         
         trajectory_msgs.msg.JointTrajectory CreatePubMsg()
@@ -70,7 +75,17 @@ namespace ROS2
             // msg.Header.Stamp = ros2Node.GetClock().Now();
             // msg.JointNames = joint_names_; //TODO 何故かJointNamesがないとしてエラーになる
             trajectory_msgs.msg.JointTrajectoryPoint point = new trajectory_msgs.msg.JointTrajectoryPoint(); // LListではなく静的配列を期待している
-            point.Positions = new double[] { left_joint_.localRotation.eulerAngles.y, right_joint_.localRotation.eulerAngles.y };
+
+            List<double> positions = new List<double>();
+            for (int i = 0; i < articulationBodies.Length; i++)
+            {
+                // Get the current rotation of the joint in radians
+                Debug.Log($"Articulation Body {i} Drive Target: {articulationBodies[i].xDrive.target}");
+                float currentAngle = articulationBodies[i].xDrive.target * Mathf.Deg2Rad;
+                positions.Add(currentAngle);
+            }
+            point.Positions = positions.ToArray();
+
             point.Velocities = new double[] { 0.0, 0.0 };
             // point.TimeFromStart = ros2Node.GetClock().Now();
             var points = new trajectory_msgs.msg.JointTrajectoryPoint[] { point };
@@ -79,11 +94,8 @@ namespace ROS2
         }
         void HandlePositionMessage(trajectory_msgs.msg.JointTrajectory msg)
         {
-            if (msg.Points.Length > 0)
-            {
-                targetLeftRot = Quaternion.AngleAxis((float)msg.Points[0].Positions[0] * Mathf.Rad2Deg, Vector3.up);;
-                targetRightRot = Quaternion.AngleAxis((float)msg.Points[0].Positions[1] * Mathf.Rad2Deg, Vector3.up);; 
-            }
+            latest_msg = msg;
+            has_new_msg = true;
         }
 }
 
