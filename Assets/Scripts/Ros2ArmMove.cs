@@ -62,6 +62,7 @@ namespace ROS2
                         var body = articulationBodies[i];
                         var drive = body.xDrive;
                         drive.target = Mathf.Rad2Deg * (float)latest_msg.Points[0].Positions[i];
+                        Debug.Log($"Joint {i} target angle: {drive.target} degrees");
                         body.xDrive = drive;
                     }
                     has_new_msg = false;  // フラグをリセット
@@ -80,8 +81,7 @@ namespace ROS2
             for (int i = 0; i < articulationBodies.Length; i++)
             {
                 // Get the current rotation of the joint in radians
-                Debug.Log($"Articulation Body {i} Drive Target: {articulationBodies[i].xDrive.target}");
-                float currentAngle = articulationBodies[i].xDrive.target * Mathf.Deg2Rad;
+                float currentAngle = articulationBodies[i].jointPosition[0];
                 positions.Add(currentAngle);
             }
             point.Positions = positions.ToArray();
