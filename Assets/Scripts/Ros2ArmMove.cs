@@ -31,7 +31,7 @@ namespace ROS2
         public ArticulationBody[] articulationBodies;
 
         [SerializeField]
-        private float speed = 1.0f; // Speed of the joint movement
+        private float speed = 20.0f; // Speed of the joint movement
         private List<ArticulationDrive> aDrive;
 
         void Awake()
@@ -49,7 +49,6 @@ namespace ROS2
                 {
                     ros2Node = ros2Unity.CreateNode("ROS2UnityPositionNode");
                     joint_pub_ = ros2Node.CreatePublisher<trajectory_msgs.msg.JointTrajectory>("unity/state_position");
-                    ros2Node = ros2Unity.CreateNode("ROS2UnityListenerNode");
                     joint_sub_ = ros2Node.CreateSubscription<trajectory_msgs.msg.JointTrajectory>(
                       "/unity/command_position", HandlePositionMessage);
                 }
@@ -67,6 +66,12 @@ namespace ROS2
                     }
                     has_new_msg = false;  // フラグをリセット
                 }
+                for (int i = 0; i < articulationBodies.Length; i++)
+                {
+                    var body = articulationBodies[i];
+                    var drive = body.xDrive;
+                    Debug.Log($"Joint {i} target angle: {drive.target} degrees");
+                }
             }
         }
         
@@ -74,7 +79,7 @@ namespace ROS2
         {
             trajectory_msgs.msg.JointTrajectory msg = new trajectory_msgs.msg.JointTrajectory();
             // msg.Header.Stamp = ros2Node.GetClock().Now();
-            // msg.JointNames = joint_names_; //TODO 何故かJointNamesがないとしてエラーになる
+            msg.Joint_names = joint_names_; //TODO 何故かJointNamesがないとしてエラーになる
             trajectory_msgs.msg.JointTrajectoryPoint point = new trajectory_msgs.msg.JointTrajectoryPoint(); // LListではなく静的配列を期待している
 
             List<double> positions = new List<double>();
@@ -86,7 +91,7 @@ namespace ROS2
             }
             point.Positions = positions.ToArray();
 
-            point.Velocities = new double[] { 0.0, 0.0 };
+            point.Velocities = new double[] { 0.0, 0.0 ,0.0, 0.0, 0.0, 0.0, 0.0,0.0,0.0 }; // Set velocities to zero for now
             // point.TimeFromStart = ros2Node.GetClock().Now();
             var points = new trajectory_msgs.msg.JointTrajectoryPoint[] { point };
             msg.Points = points;
