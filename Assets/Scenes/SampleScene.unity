@@ -692,10 +692,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   joint_names_:
   - left_shoulder_joint
-  - left_forearm_joint
-  - right_wrist_joint
   - left_upper_arm_joint
+  - left_forearm_joint
   - right_forearm_joint
+  - right_wrist_joint
   - left_wrist_joint
   - right_hand_joint
   - right_finger_joint
@@ -5524,6 +5524,10 @@ PrefabInstance:
       value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 2397628688851367218, guid: 7868a754234f1d2eba7497ff959c40eb, type: 3}
+      propertyPath: m_XDrive.forceLimit
+      value: 3.402823e+38
+      objectReference: {fileID: 0}
+    - target: {fileID: 2397628688851367218, guid: 7868a754234f1d2eba7497ff959c40eb, type: 3}
       propertyPath: m_ParentAnchorPosition.x
       value: -0.017947078
       objectReference: {fileID: 0}
@@ -5590,6 +5594,10 @@ PrefabInstance:
     - target: {fileID: 2453401580943245154, guid: 7868a754234f1d2eba7497ff959c40eb, type: 3}
       propertyPath: m_XDrive.stiffness
       value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 2453401580943245154, guid: 7868a754234f1d2eba7497ff959c40eb, type: 3}
+      propertyPath: m_XDrive.forceLimit
+      value: 3.402823e+38
       objectReference: {fileID: 0}
     - target: {fileID: 2453401580943245154, guid: 7868a754234f1d2eba7497ff959c40eb, type: 3}
       propertyPath: m_ParentAnchorPosition.x
@@ -5680,6 +5688,10 @@ PrefabInstance:
       value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 3271321946293854772, guid: 7868a754234f1d2eba7497ff959c40eb, type: 3}
+      propertyPath: m_XDrive.forceLimit
+      value: 3.402823e+38
+      objectReference: {fileID: 0}
+    - target: {fileID: 3271321946293854772, guid: 7868a754234f1d2eba7497ff959c40eb, type: 3}
       propertyPath: m_ParentAnchorPosition.x
       value: -0.018533885
       objectReference: {fileID: 0}
@@ -5750,6 +5762,10 @@ PrefabInstance:
     - target: {fileID: 3698175192115363922, guid: 7868a754234f1d2eba7497ff959c40eb, type: 3}
       propertyPath: m_XDrive.stiffness
       value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 3698175192115363922, guid: 7868a754234f1d2eba7497ff959c40eb, type: 3}
+      propertyPath: m_XDrive.forceLimit
+      value: 3.402823e+38
       objectReference: {fileID: 0}
     - target: {fileID: 3698175192115363922, guid: 7868a754234f1d2eba7497ff959c40eb, type: 3}
       propertyPath: m_ParentAnchorPosition.x
@@ -5836,6 +5852,10 @@ PrefabInstance:
       value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 4349703510789101995, guid: 7868a754234f1d2eba7497ff959c40eb, type: 3}
+      propertyPath: m_XDrive.forceLimit
+      value: 3.402823e+38
+      objectReference: {fileID: 0}
+    - target: {fileID: 4349703510789101995, guid: 7868a754234f1d2eba7497ff959c40eb, type: 3}
       propertyPath: m_ParentAnchorPosition.x
       value: -0.29664052
       objectReference: {fileID: 0}
@@ -5893,7 +5913,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6288393341724765902, guid: 7868a754234f1d2eba7497ff959c40eb, type: 3}
       propertyPath: m_XDrive.target
-      value: 90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6288393341724765902, guid: 7868a754234f1d2eba7497ff959c40eb, type: 3}
       propertyPath: m_XDrive.damping
@@ -5930,6 +5950,10 @@ PrefabInstance:
     - target: {fileID: 6288393341724765902, guid: 7868a754234f1d2eba7497ff959c40eb, type: 3}
       propertyPath: m_XDrive.stiffness
       value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 6288393341724765902, guid: 7868a754234f1d2eba7497ff959c40eb, type: 3}
+      propertyPath: m_XDrive.forceLimit
+      value: 3.4028235e+38
       objectReference: {fileID: 0}
     - target: {fileID: 6288393341724765902, guid: 7868a754234f1d2eba7497ff959c40eb, type: 3}
       propertyPath: m_ParentAnchorPosition.x
@@ -6002,6 +6026,10 @@ PrefabInstance:
     - target: {fileID: 6360380031341756913, guid: 7868a754234f1d2eba7497ff959c40eb, type: 3}
       propertyPath: m_XDrive.stiffness
       value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 6360380031341756913, guid: 7868a754234f1d2eba7497ff959c40eb, type: 3}
+      propertyPath: m_XDrive.forceLimit
+      value: 3.402823e+38
       objectReference: {fileID: 0}
     - target: {fileID: 6360380031341756913, guid: 7868a754234f1d2eba7497ff959c40eb, type: 3}
       propertyPath: m_ParentAnchorPosition.x
@@ -6116,6 +6144,10 @@ PrefabInstance:
       value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 7809210482564470759, guid: 7868a754234f1d2eba7497ff959c40eb, type: 3}
+      propertyPath: m_XDrive.forceLimit
+      value: 3.402823e+38
+      objectReference: {fileID: 0}
+    - target: {fileID: 7809210482564470759, guid: 7868a754234f1d2eba7497ff959c40eb, type: 3}
       propertyPath: m_ParentAnchorPosition.x
       value: 0.0105519295
       objectReference: {fileID: 0}
@@ -6186,6 +6218,10 @@ PrefabInstance:
     - target: {fileID: 8975713180543611981, guid: 7868a754234f1d2eba7497ff959c40eb, type: 3}
       propertyPath: m_XDrive.stiffness
       value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 8975713180543611981, guid: 7868a754234f1d2eba7497ff959c40eb, type: 3}
+      propertyPath: m_XDrive.forceLimit
+      value: 3.402823e+38
       objectReference: {fileID: 0}
     - target: {fileID: 8975713180543611981, guid: 7868a754234f1d2eba7497ff959c40eb, type: 3}
       propertyPath: m_ParentAnchorPosition.x
