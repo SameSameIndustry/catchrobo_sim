@@ -22,11 +22,11 @@ namespace ROS2
         // Start is called before the first frame update
         private ROS2UnityComponent ros2Unity;
         private ROS2Node ros2Node;
-        private IPublisher<trajectory_msgs.msg.JointTrajectory> joint_pub_;
-        private ISubscription<trajectory_msgs.msg.JointTrajectory> joint_sub_;
+        private IPublisher<sensor_msgs.msg.JointState> joint_pub_;
+        private ISubscription<sensor_msgs.msg.JointState> joint_sub_;
         private ISubscription<geometry_msgs.msg.Pose> _goalPose;
 
-        private trajectory_msgs.msg.JointTrajectory latest_msg = null;
+        private sensor_msgs.msg.JointState latest_msg = null;
         private bool has_new_msg = false;
         [SerializeField]
         private string[] joint_names_;
@@ -61,21 +61,21 @@ namespace ROS2
                 if (ros2Node == null)
                 {
                     ros2Node = ros2Unity.CreateNode("ROS2UnityPositionNode");
-                    joint_pub_ = ros2Node.CreatePublisher<trajectory_msgs.msg.JointTrajectory>("unity/state_position");
-                    joint_sub_ = ros2Node.CreateSubscription<trajectory_msgs.msg.JointTrajectory>(
+                    joint_pub_ = ros2Node.CreatePublisher<sensor_msgs.msg.JointState>("unity/state_position");
+                    joint_sub_ = ros2Node.CreateSubscription<sensor_msgs.msg.JointState>(
                       "/unity/command_position", HandlePositionMessage);
                     _goalPose = ros2Node.CreateSubscription<geometry_msgs.msg.Pose>(
                      "/arm_move/goal_pose", HandlePoseMessage);
                 }
-                trajectory_msgs.msg.JointTrajectory msg = CreatePubMsg();
+                sensor_msgs.msg.JointState msg = CreatePubMsg();
                 joint_pub_.Publish(msg);
                 if (has_new_msg && latest_msg != null)
                 {
-                    for (int i = 0; i < latest_msg.Points[0].Positions.Length; i++)
+                    for (int i = 0; i < latest_msg.Position.Length; i++)
                     {
                         var body = articulationBodies[i];
                         var drive = body.xDrive;
-                        drive.target = Mathf.Rad2Deg * (float)latest_msg.Points[0].Positions[i];
+                        drive.target = Mathf.Rad2Deg * (float)latest_msg.Position[i];
                         Debug.Log($"Joint {i} target angle: {drive.target} degrees");
                         body.xDrive = drive;
                     }
@@ -90,12 +90,11 @@ namespace ROS2
             }
         }
 
-        trajectory_msgs.msg.JointTrajectory CreatePubMsg()
+        sensor_msgs.msg.JointState CreatePubMsg()
         {
-            trajectory_msgs.msg.JointTrajectory msg = new trajectory_msgs.msg.JointTrajectory();
+            sensor_msgs.msg.JointState msg = new sensor_msgs.msg.JointState(); // LListではなく静的配列を期待している
             // msg.Header.Stamp = ros2Node.GetClock().Now();
-            msg.Joint_names = joint_names_; //TODO 何故かJointNamesがないとしてエラーになる
-            trajectory_msgs.msg.JointTrajectoryPoint point = new trajectory_msgs.msg.JointTrajectoryPoint(); // LListではなく静的配列を期待している
+            msg.Name = joint_names_; //TODO 何故かJointNamesがないとしてエラーになる
 
             List<double> positions = new List<double>();
             for (int i = 0; i < articulationBodies.Length; i++)
@@ -104,15 +103,13 @@ namespace ROS2
                 float currentAngle = articulationBodies[i].jointPosition[0];
                 positions.Add(currentAngle);
             }
-            point.Positions = positions.ToArray();
+            msg.Position = positions.ToArray();
 
-            point.Velocities = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }; // Set velocities to zero for now
-            // point.TimeFromStart = ros2Node.GetClock().Now();
-            var points = new trajectory_msgs.msg.JointTrajectoryPoint[] { point };
-            msg.Points = points;
+            msg.Velocity = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }; // Set velocities to zero for now
+
             return msg;
         }
-        void HandlePositionMessage(trajectory_msgs.msg.JointTrajectory msg)
+        void HandlePositionMessage(sensor_msgs.msg.JointState msg)
         {
             latest_msg = msg;
             has_new_msg = true;
@@ -125,7 +122,7 @@ namespace ROS2
             float y = (float)msg.Position.Y;
             float z = (float)msg.Position.Z;
             float r = Mathf.Sqrt(x * x + y * y);
-            float currentLeftRadialRotationRads = articulationBodies[0].jointPosition[0];
+            float currentLeftRadialRotationRads = articulationBodies[0].jointPosition[0]; // 1つ目の関節(left_radialを期待)の現在の回転角度をラジアンで取得
             var elbow_angle = Mathf.Asin((r - l2 * Mathf.Sin(currentLeftRadialRotationRads)) / l3);
             var leftBody = _leftElbow;
             var rightBody = _rightElbow;

@@ -703,6 +703,11 @@ MonoBehaviour:
   - {fileID: 1069215450}
   - {fileID: 584135691}
   - {fileID: 2001598254}
+  l1: 0.4
+  l2: 0.4
+  l3: 0.4
+  _leftElbow: {fileID: 5576933473003896067}
+  _rightElbow: {fileID: 5576933473003896066}
   speed: 20
 --- !u!1 &432348836
 GameObject:
@@ -4925,6 +4930,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   joint_names_: []
   articulationBodies: []
+  l1: 0.4
+  l2: 0.4
+  l3: 0.4
+  _leftElbow: {fileID: 0}
+  _rightElbow: {fileID: 0}
   speed: 1
 --- !u!1 &1930871058
 GameObject:
@@ -8850,6 +8860,16 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1b7d4fbbf0f25b80fbe90d6b6bcedebf, type: 3}
+--- !u!171741748 &5576933473003896066 stripped
+ArticulationBody:
+  m_CorrespondingSourceObject: {fileID: 648850026713714972, guid: 1b7d4fbbf0f25b80fbe90d6b6bcedebf, type: 3}
+  m_PrefabInstance: {fileID: 5576933473003896065}
+  m_PrefabAsset: {fileID: 0}
+--- !u!171741748 &5576933473003896067 stripped
+ArticulationBody:
+  m_CorrespondingSourceObject: {fileID: 894769794021979696, guid: 1b7d4fbbf0f25b80fbe90d6b6bcedebf, type: 3}
+  m_PrefabInstance: {fileID: 5576933473003896065}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5652624312020316158
 Transform:
   m_ObjectHideFlags: 0
