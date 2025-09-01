@@ -24,11 +24,24 @@ namespace ROS2
         private ROS2Node ros2Node;
         private IPublisher<trajectory_msgs.msg.JointTrajectory> joint_pub_;
         private ISubscription<trajectory_msgs.msg.JointTrajectory> joint_sub_;
+        private ISubscription<geometry_msgs.msg.Pose> _goalPose;
+
         private trajectory_msgs.msg.JointTrajectory latest_msg = null;
         private bool has_new_msg = false;
         [SerializeField]
         private string[] joint_names_;
         public ArticulationBody[] articulationBodies;
+        [SerializeField]
+        float l1 = 0.4f;
+        [SerializeField]
+        float l2 = 0.4f;
+        [SerializeField]
+        float l3 = 0.4f;
+
+        [SerializeField]
+        ArticulationBody _leftElbow;
+        [SerializeField]
+        ArticulationBody _rightElbow;
 
         [SerializeField]
         private float speed = 20.0f; // Speed of the joint movement
@@ -51,6 +64,8 @@ namespace ROS2
                     joint_pub_ = ros2Node.CreatePublisher<trajectory_msgs.msg.JointTrajectory>("unity/state_position");
                     joint_sub_ = ros2Node.CreateSubscription<trajectory_msgs.msg.JointTrajectory>(
                       "/unity/command_position", HandlePositionMessage);
+                    _goalPose = ros2Node.CreateSubscription<geometry_msgs.msg.Pose>(
+                     "/arm_move/goal_pose", HandlePoseMessage);
                 }
                 trajectory_msgs.msg.JointTrajectory msg = CreatePubMsg();
                 joint_pub_.Publish(msg);
@@ -74,7 +89,7 @@ namespace ROS2
                 }
             }
         }
-        
+
         trajectory_msgs.msg.JointTrajectory CreatePubMsg()
         {
             trajectory_msgs.msg.JointTrajectory msg = new trajectory_msgs.msg.JointTrajectory();
@@ -91,7 +106,7 @@ namespace ROS2
             }
             point.Positions = positions.ToArray();
 
-            point.Velocities = new double[] { 0.0, 0.0 ,0.0, 0.0, 0.0, 0.0, 0.0,0.0,0.0 }; // Set velocities to zero for now
+            point.Velocities = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }; // Set velocities to zero for now
             // point.TimeFromStart = ros2Node.GetClock().Now();
             var points = new trajectory_msgs.msg.JointTrajectoryPoint[] { point };
             msg.Points = points;
@@ -101,6 +116,26 @@ namespace ROS2
         {
             latest_msg = msg;
             has_new_msg = true;
+        }
+        // 自分で肘のところを曲げるようにする
+        void HandlePoseMessage(geometry_msgs.msg.Pose msg)
+        {
+            // Handle the incoming pose message
+            float x = (float)msg.Position.X;
+            float y = (float)msg.Position.Y;
+            float z = (float)msg.Position.Z;
+            float r = Mathf.Sqrt(x * x + y * y);
+            float currentLeftRadialRotationRads = articulationBodies[0].jointPosition[0];
+            var elbow_angle = Mathf.Asin((r - l2 * Mathf.Sin(currentLeftRadialRotationRads)) / l3);
+            var leftBody = _leftElbow;
+            var rightBody = _rightElbow;
+            var leftDrive = leftBody.xDrive;
+            leftDrive.target = Mathf.Rad2Deg * elbow_angle;
+            leftBody.xDrive = leftDrive;
+
+            var rightDrive = rightBody.xDrive;
+            rightDrive.target = -Mathf.Rad2Deg * elbow_angle;
+            rightBody.xDrive = rightDrive;
         }
 }
 
