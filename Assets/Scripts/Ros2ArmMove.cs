@@ -38,7 +38,10 @@ namespace ROS2
         float l2 = 0.4f;
         [SerializeField]
         float l3 = 0.4f;
-
+        [SerializeField]
+        float initial_left_radial_angle = 1.57f;
+        [SerializeField]
+        float initial_elbow_angle = 0.502f;
         [SerializeField]
         ArticulationBody _leftElbow;
         [SerializeField]
@@ -121,9 +124,9 @@ namespace ROS2
 
         float DecideElbowAngle()
         {
-            float currentLeftRadialRotationRads = articulationBodies[0].jointPosition[0]; // 1つ目の関節(left_radialを期待)の現在の回転角度をラジアンで取得
+            float currentLeftRadialRotationRads = articulationBodies[0].jointPosition[0] + initial_left_radial_angle; // 1つ目の関節(left_radialを期待)の現在の回転角度をラジアンで取得
             var elbow_angle = Mathf.Acos((l1/2 - l2 * Mathf.Cos(currentLeftRadialRotationRads)) / l3);
-            return elbow_angle;
+            return elbow_angle - initial_elbow_angle;
         }
 }
 
