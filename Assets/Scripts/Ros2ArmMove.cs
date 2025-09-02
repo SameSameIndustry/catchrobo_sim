@@ -24,10 +24,11 @@ namespace ROS2
         private ROS2Node ros2Node;
         private IPublisher<sensor_msgs.msg.JointState> joint_pub_;
         private ISubscription<sensor_msgs.msg.JointState> joint_sub_;
-        private ISubscription<geometry_msgs.msg.Pose> _goalPose;
 
         private sensor_msgs.msg.JointState latest_msg = null;
+
         private bool has_new_msg = false;
+
         [SerializeField]
         private string[] joint_names_;
         public ArticulationBody[] articulationBodies;
@@ -64,8 +65,7 @@ namespace ROS2
                     joint_pub_ = ros2Node.CreatePublisher<sensor_msgs.msg.JointState>("unity/state_position");
                     joint_sub_ = ros2Node.CreateSubscription<sensor_msgs.msg.JointState>(
                       "/unity/command_position", HandlePositionMessage);
-                    _goalPose = ros2Node.CreateSubscription<geometry_msgs.msg.Pose>(
-                     "/arm_move/goal_pose", HandlePoseMessage);
+
                 }
                 sensor_msgs.msg.JointState msg = CreatePubMsg();
                 joint_pub_.Publish(msg);
@@ -76,17 +76,21 @@ namespace ROS2
                         var body = articulationBodies[i];
                         var drive = body.xDrive;
                         drive.target = Mathf.Rad2Deg * (float)latest_msg.Position[i];
-                        Debug.Log($"Joint {i} target angle: {drive.target} degrees");
                         body.xDrive = drive;
                     }
                     has_new_msg = false;  // フラグをリセット
                 }
-                for (int i = 0; i < articulationBodies.Length; i++)
-                {
-                    var body = articulationBodies[i];
-                    var drive = body.xDrive;
-                    Debug.Log($"Joint {i} target angle: {drive.target} degrees");
-                }
+                // 肘の角度を決定
+                var elbow_angle = DecideElbowAngle();
+                var leftBody = _leftElbow;
+                var rightBody = _rightElbow;
+                var leftDrive = leftBody.xDrive;
+                leftDrive.target = Mathf.Rad2Deg * elbow_angle;
+                leftBody.xDrive = leftDrive;
+                var rightDrive = rightBody.xDrive;
+                rightDrive.target = -Mathf.Rad2Deg * elbow_angle;
+                rightBody.xDrive = rightDrive;
+
             }
         }
 
@@ -94,7 +98,7 @@ namespace ROS2
         {
             sensor_msgs.msg.JointState msg = new sensor_msgs.msg.JointState(); // LListではなく静的配列を期待している
             // msg.Header.Stamp = ros2Node.GetClock().Now();
-            msg.Name = joint_names_; //TODO 何故かJointNamesがないとしてエラーになる
+            msg.Name = joint_names_;
 
             List<double> positions = new List<double>();
             for (int i = 0; i < articulationBodies.Length; i++)
@@ -114,25 +118,12 @@ namespace ROS2
             latest_msg = msg;
             has_new_msg = true;
         }
-        // 自分で肘のところを曲げるようにする
-        void HandlePoseMessage(geometry_msgs.msg.Pose msg)
-        {
-            // Handle the incoming pose message
-            float x = (float)msg.Position.X;
-            float y = (float)msg.Position.Y;
-            float z = (float)msg.Position.Z;
-            float r = Mathf.Sqrt(x * x + y * y);
-            float currentLeftRadialRotationRads = articulationBodies[0].jointPosition[0]; // 1つ目の関節(left_radialを期待)の現在の回転角度をラジアンで取得
-            var elbow_angle = Mathf.Asin((r - l2 * Mathf.Sin(currentLeftRadialRotationRads)) / l3);
-            var leftBody = _leftElbow;
-            var rightBody = _rightElbow;
-            var leftDrive = leftBody.xDrive;
-            leftDrive.target = Mathf.Rad2Deg * elbow_angle;
-            leftBody.xDrive = leftDrive;
 
-            var rightDrive = rightBody.xDrive;
-            rightDrive.target = -Mathf.Rad2Deg * elbow_angle;
-            rightBody.xDrive = rightDrive;
+        float DecideElbowAngle()
+        {
+            float currentLeftRadialRotationRads = articulationBodies[0].jointPosition[0]; // 1つ目の関節(left_radialを期待)の現在の回転角度をラジアンで取得
+            var elbow_angle = Mathf.Acos((l1/2 - l2 * Mathf.Cos(currentLeftRadialRotationRads)) / l3);
+            return elbow_angle;
         }
 }
 
