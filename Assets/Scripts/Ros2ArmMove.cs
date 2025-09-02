@@ -24,10 +24,13 @@ namespace ROS2
         private ROS2Node ros2Node;
         private IPublisher<sensor_msgs.msg.JointState> joint_pub_;
         private ISubscription<sensor_msgs.msg.JointState> joint_sub_;
+        private ISubscription<geometry_msgs.msg.Pose> _goalPose;
 
         private sensor_msgs.msg.JointState latest_msg = null;
+        private geometry_msgs.msg.Pose latest_goal_pose_msg = null;
 
         private bool has_new_msg = false;
+        private bool has_new_goal_pose_msg = false;
 
         [SerializeField]
         private string[] joint_names_;
@@ -69,6 +72,8 @@ namespace ROS2
                     joint_sub_ = ros2Node.CreateSubscription<sensor_msgs.msg.JointState>(
                       "/unity/command_position", HandlePositionMessage);
 
+
+
                 }
                 sensor_msgs.msg.JointState msg = CreatePubMsg();
                 joint_pub_.Publish(msg);
@@ -93,6 +98,10 @@ namespace ROS2
                 var rightDrive = rightBody.xDrive;
                 rightDrive.target = -Mathf.Rad2Deg * elbow_angle;
                 rightBody.xDrive = rightDrive;
+                if (has_new_goal_pose_msg && latest_goal_pose_msg != null)
+                {
+                    // TODO goalPoseに目印を追加する
+                }
 
             }
         }
@@ -125,8 +134,13 @@ namespace ROS2
         float DecideElbowAngle()
         {
             float currentLeftRadialRotationRads = articulationBodies[0].jointPosition[0] + initial_left_radial_angle; // 1つ目の関節(left_radialを期待)の現在の回転角度をラジアンで取得
-            var elbow_angle = Mathf.Acos((l1/2 - l2 * Mathf.Cos(currentLeftRadialRotationRads)) / l3);
+            var elbow_angle = Mathf.Acos((l1 / 2 - l2 * Mathf.Cos(currentLeftRadialRotationRads)) / l3);
             return elbow_angle - initial_elbow_angle;
+        }
+        void HandlePoseMessage(geometry_msgs.msg.Pose msg)
+        {
+            latest_goal_pose_msg = msg;
+            has_new_goal_pose_msg = true;
         }
 }
 
