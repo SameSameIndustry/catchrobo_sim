@@ -685,6 +685,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40b88273693d62d6aa43aa89d1d2f82d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  goalPoseMarkerPrefab: {fileID: 8419361023253196470, guid: 33156c501ed680a4e92d261aa89bb653, type: 3}
   joint_names_:
   - arm_left_radial_joint
   - arm_right_radial_joint
@@ -706,6 +707,8 @@ MonoBehaviour:
   l1: 0.4
   l2: 0.4
   l3: 0.4
+  initial_left_radial_angle: 1.57
+  initial_elbow_angle: 0.502
   _leftElbow: {fileID: 5576933473003896067}
   _rightElbow: {fileID: 5576933473003896066}
   speed: 20
@@ -4928,11 +4931,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40b88273693d62d6aa43aa89d1d2f82d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  goalPoseMarkerPrefab: {fileID: 0}
   joint_names_: []
   articulationBodies: []
   l1: 0.4
   l2: 0.4
   l3: 0.4
+  initial_left_radial_angle: 1.57
+  initial_elbow_angle: 0.502
   _leftElbow: {fileID: 0}
   _rightElbow: {fileID: 0}
   speed: 1

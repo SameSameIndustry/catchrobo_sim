@@ -24,13 +24,16 @@ namespace ROS2
         private ROS2Node ros2Node;
         private IPublisher<sensor_msgs.msg.JointState> joint_pub_;
         private ISubscription<sensor_msgs.msg.JointState> joint_sub_;
-        private ISubscription<geometry_msgs.msg.Pose> _goalPose;
+        private ISubscription<geometry_msgs.msg.Pose> goalPoseSub;
 
         private sensor_msgs.msg.JointState latest_msg = null;
         private geometry_msgs.msg.Pose latest_goal_pose_msg = null;
 
         private bool has_new_msg = false;
         private bool has_new_goal_pose_msg = false;
+        private GameObject goalPoseMarker;
+        [SerializeField]
+        private GameObject goalPoseMarkerPrefab;
 
         [SerializeField]
         private string[] joint_names_;
@@ -58,7 +61,7 @@ namespace ROS2
         {
             ros2Unity = GetComponent<ROS2UnityComponent>();
             aDrive = new List<ArticulationDrive>();
-
+            goalPoseMarker = Instantiate(goalPoseMarkerPrefab, Vector3.zero, Quaternion.identity);
         }
 
         void Update()
@@ -71,6 +74,9 @@ namespace ROS2
                     joint_pub_ = ros2Node.CreatePublisher<sensor_msgs.msg.JointState>("unity/state_position");
                     joint_sub_ = ros2Node.CreateSubscription<sensor_msgs.msg.JointState>(
                       "/unity/command_position", HandlePositionMessage);
+                    goalPoseSub = ros2Node.CreateSubscription<geometry_msgs.msg.Pose>(
+                      "/arm_move/goal_pose", HandlePoseMessage);
+                    
 
 
 
@@ -100,7 +106,15 @@ namespace ROS2
                 rightBody.xDrive = rightDrive;
                 if (has_new_goal_pose_msg && latest_goal_pose_msg != null)
                 {
-                    // TODO goalPoseに目印を追加する
+                    Debug.Log("New Goal Pose Received: " +
+                      -latest_goal_pose_msg.Position.Y + ", " +
+                      latest_goal_pose_msg.Position.Z + ", " +
+                      latest_goal_pose_msg.Position.X);
+                    goalPoseMarker.transform.position = new Vector3(
+                        (float)latest_goal_pose_msg.Position.X,
+                        (float)latest_goal_pose_msg.Position.Z,
+                        (float)-latest_goal_pose_msg.Position.Y);
+                    has_new_goal_pose_msg = false;  // フラグをリセット
                 }
 
             }
