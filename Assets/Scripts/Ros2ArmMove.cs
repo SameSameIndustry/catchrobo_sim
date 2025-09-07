@@ -147,9 +147,20 @@ namespace ROS2
 
         float DecideElbowAngle()
         {
-            float currentLeftRadialRotationRads = articulationBodies[0].jointPosition[0] + initial_left_radial_angle; // 1つ目の関節(left_radialを期待)の現在の回転角度をラジアンで取得
-            var elbow_angle = Mathf.Acos((l1 / 2 - l2 * Mathf.Cos(currentLeftRadialRotationRads)) / l3);
-            return elbow_angle - initial_elbow_angle;
+            // ① 左ラジアルの現在角（rad）。ゼロ軸オフセットをここで吸収
+            float theta = articulationBodies[0].jointPosition[0] + initial_left_radial_angle;
+
+            // ② 水平・垂直の“必要投影量”
+            //    hx = l3*cos(alpha) = l1/2 - l2*cos(theta)
+            //    hy = l3*sin(alpha) = l2*sin(theta)
+            float hx = 0.5f * l1 - l2 * Mathf.Cos(theta);
+            float hy =        l2 * Mathf.Sin(theta);
+
+            // ③ 象限まで含めて alpha を決定（連続性が良い）
+            float alpha = Mathf.Atan2(hy, hx); // [-π, π)
+
+            // ④ 機械ゼロ(Inspector)との差分で返す（この時点ではrad）
+            return -(alpha - initial_elbow_angle);
         }
         void HandlePoseMessage(geometry_msgs.msg.Pose msg)
         {
